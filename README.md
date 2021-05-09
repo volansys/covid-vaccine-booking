@@ -2,6 +2,9 @@
 
 This very basic CLI based script can be used to automate covid vaccination slot booking on Co-WIN Platform. 
 
+If it helped you and want to appreciate me. Then do so by buying me coffee (link below). This motivates us to serve to the community. many Thanks!
+
+<a href="https://www.buymeacoffee.com/vishalv26" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 ### Important: 
 - This is a proof of concept project. I do NOT endorse or condone, in any shape or form, automating any monitoring/booking tasks. **Use at your own risk. Seriously, if you get into legal trouble for using this, I am not liable.**
@@ -11,17 +14,11 @@ This very basic CLI based script can be used to automate covid vaccination slot 
 - **Be careful if you choose to use the auto-book feature.** It will blindly select first available center, date - both sorted ascending - and a RANDOM slot. I would recommend __against__ using this. Only added for the convenience of people in short supply areas.
 - If you accidentally book a slot, don't worry. You can always login to the official portal and cancel that. There will be an X symbol on the right-top corner **_for each beneficiary._**
 - API Details (read the first paragraph at least): https://apisetu.gov.in/public/marketplace/api/cowin/cowin-public-v2
-- Please feel free to spread the word, if you dont mind. Link: https://www.linkedin.com/feed/update/urn:li:activity:6794138228464193536/
-- BMC Link: https://www.buymeacoffee.com/pallupz
-- Discord: https://discord.gg/rCz8VdRB
 - And finally, I know code quality isn't great. Suggestions are welcome.
-
-### Noteworthy Forks
-- https://github.com/bombardier-gif/covid-vaccine-booking : I haven't tried this personally but, it looks like a promising, completely automated solution that would require a bit more setting up.
 
 ### Usage:
 
-For the anyone not familiar with Python and using Windows, using the ```covid-vaccine-slot-booking.exe``` executable file (EDIT: EXE is not working at the moment due to unresolved errors) would be the easiest way. It might trigger an anti-virus alert. That's because I used ```pyinstaller``` to package the python code and it needs a bit more effort to avoid such alerts.
+For the anyone not familiar with Python and using Windows, using the ```run.bat``` would be the easiest way.
 
 OR
 
