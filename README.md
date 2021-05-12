@@ -6,16 +6,6 @@ If it helped you and want to appreciate me. Then do so by buying me coffee (link
 
 <a href="https://www.buymeacoffee.com/vishalv26" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-### Important: 
-- This is a proof of concept project. I do NOT endorse or condone, in any shape or form, automating any monitoring/booking tasks. **Use at your own risk. Seriously, if you get into legal trouble for using this, I am not liable.**
-- This CANNOT book slot automatically. You will need to enter the OTP and Captcha.
-- Do NOT use unless all the beneficiaries selected are supposed to get the same vaccine and dose. 
-- There is no option to register new mobile or add beneficiaries. This can be used only after beneficiary has been added through the official app/site.
-- **Be careful if you choose to use the auto-book feature.** It will blindly select first available center, date - both sorted ascending - and a RANDOM slot. I would recommend __against__ using this. Only added for the convenience of people in short supply areas.
-- If you accidentally book a slot, don't worry. You can always login to the official portal and cancel that. There will be an X symbol on the right-top corner **_for each beneficiary._**
-- API Details (read the first paragraph at least): https://apisetu.gov.in/public/marketplace/api/cowin/cowin-public-v2
-- And finally, I know code quality isn't great. Suggestions are welcome.
-
 ### Usage:
 
 For the anyone not familiar with Python and using Windows, using the ```run.bat``` would be the easiest way.
@@ -179,3 +169,13 @@ pip install -r requirements.txt
 	---------->  Enter a choice e.g: 1.4 for (1st center 4th slot): 1.3
 	```
 12. Before the next update, you'll have 10 seconds to provide a choice in the format ```centerIndex.slotIndex``` eg: The input```1.4``` will select the vaccination center in second row and its fourth slot.
+
+### Important: 
+- This is a proof of concept project. I do NOT endorse or condone, in any shape or form, automating any monitoring/booking tasks. **Use at your own risk. Seriously, if you get into legal trouble for using this, I am not liable.**
+- This CANNOT book slot automatically. You will need to enter the OTP and Captcha.
+- Do NOT use unless all the beneficiaries selected are supposed to get the same vaccine and dose. 
+- There is no option to register new mobile or add beneficiaries. This can be used only after beneficiary has been added through the official app/site.
+- **Be careful if you choose to use the auto-book feature.** It will blindly select first available center, date - both sorted ascending - and a RANDOM slot. I would recommend __against__ using this. Only added for the convenience of people in short supply areas.
+- If you accidentally book a slot, don't worry. You can always login to the official portal and cancel that. There will be an X symbol on the right-top corner **_for each beneficiary._**
+- API Details (read the first paragraph at least): https://apisetu.gov.in/public/marketplace/api/cowin/cowin-public-v2
+- And finally, I know code quality isn't great. Suggestions are welcome.
