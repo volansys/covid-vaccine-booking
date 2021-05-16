@@ -10,3 +10,7 @@ jobs:
       with:
         filename: 'donotdownload-release.zip'
         exclusions: '*.git*'
+    - uses: ncipollo/release-action@v1
+      with:
+          artifacts: "donotdownload-release.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
