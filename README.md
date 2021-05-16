@@ -8,7 +8,9 @@ If it helped you and want to appreciate me. Then do so by buying me coffee (link
 
 ### Usage:
 
-For the anyone not familiar with Python and using Windows, using the ```run.bat``` would be the easiest way.
+For the anyone not familiar with Python and using Windows, using the ```native.bat``` would be the easiest way.
+
+Or if You are coming from https://github.com/bombardier-gif/covid-vaccine-booking then run ```advanced.bat``` to run his version of the code. Full Documentation for this is available @ https://github.com/bombardier-gif/covid-vaccine-booking#readme
 
 OR
 
