@@ -1,9 +1,8 @@
 import json
 from hashlib import sha256
-from collections import Counter
 from inputimeout import inputimeout, TimeoutOccurred
 import tabulate, copy, time, datetime, requests, sys, os, random
-from captcha import captcha_buider
+from captcha import captcha_builder
 
 BOOKING_URL = "https://cdn-api.co-vin.in/api/v2/appointment/schedule"
 BENEFICIARIES_URL = "https://cdn-api.co-vin.in/api/v2/appointment/beneficiaries"
@@ -38,12 +37,14 @@ else:
         winsound.Beep(freq, duration)
 
 
-def viable_options(resp, minimum_slots, min_age_booking, fee_type):
+def viable_options(resp, minimum_slots, min_age_booking, fee_type, dose):
     options = []
     if len(resp['centers']) >= 0:
         for center in resp['centers']:
             for session in center['sessions']:
-                if (session['available_capacity'] >= minimum_slots) \
+                # availability = session['available_capacity']
+                availability = session['available_capacity_dose1'] if dose == 1 else session['available_capacity_dose2']
+                if (availability >= minimum_slots) \
                         and (session['min_age_limit'] <= min_age_booking)\
                         and (center['fee_type'] in fee_type):
                     out = {
@@ -51,7 +52,7 @@ def viable_options(resp, minimum_slots, min_age_booking, fee_type):
                         'district': center['district_name'],
                         'pincode': center['pincode'],
                         'center_id': center['center_id'],
-                        'available': session['available_capacity'],
+                        'available': availability,
                         'date': session['date'],
                         'slots': session['slots'],
                         'session_id': session['session_id']
@@ -132,14 +133,30 @@ def collect_user_details(request_header):
 
     # Make sure all beneficiaries have the same type of vaccine
     vaccine_types = [beneficiary['vaccine'] for beneficiary in beneficiary_dtls]
-    vaccines = Counter(vaccine_types)
+    statuses = [beneficiary['status'] for beneficiary in beneficiary_dtls]
 
-    if len(vaccines.keys()) != 1:
-        print(f"All beneficiaries in one attempt should have the same vaccine type. Found {len(vaccines.keys())}")
+    if len(set(statuses)) > 1:
+        print("\n================================= Important =================================\n")
+        print(f"All beneficiaries in one attempt should be of same vaccination status (same dose). Found {statuses}")
         os.system("pause")
         sys.exit(1)
 
-    vaccine_type = vaccine_types[0] # if all([beneficiary['status'] == 'Partially Vaccinated' for beneficiary in beneficiary_dtls]) else None
+    vaccines = set(vaccine_types)
+    if len(vaccines) > 1 and ('' in vaccines):
+        vaccines.remove('')
+        vaccine_types.remove('')
+        print("\n================================= Important =================================\n")
+        print(f"Some of the beneficiaries have a set vaccine preference ({vaccines}) and some do not.")
+        print("Results will be filtered to show only the set vaccine preference.")
+        os.system("pause")
+
+    if len(vaccines) != 1:
+        print("\n================================= Important =================================\n")
+        print(f"All beneficiaries in one attempt should have the same vaccine type. Found {len(vaccines)}")
+        os.system("pause")
+        sys.exit(1)
+
+    vaccine_type = vaccine_types[0]
     if not vaccine_type:
         print("\n================================= Vaccine Info =================================\n")
         vaccine_type = get_vaccine_preference()
@@ -177,15 +194,16 @@ def collect_user_details(request_header):
 
     # Get search start date
     start_date = input(
-        '\nSearch for next seven day starting from when?\nUse 1 for today, 2 for tomorrow, or provide a date in the format yyyy-mm-dd. Default 2: ')
+        '\nSearch for next seven day starting from when?\nUse 1 for today, 2 for tomorrow, or provide a date in the format DD-MM-YYYY. Default 2: ')
     if not start_date:
         start_date = 2
     elif start_date in ['1', '2']:
         start_date = int(start_date)
     else:
         try:
-            datetime.datetime.strptime(start_date, '%Y-%m-%d')
+            datetime.datetime.strptime(start_date, '%d-%m-%Y')
         except ValueError:
+            print('Invalid Date! Proceeding with tomorrow.')
             start_date = 2
 
     # Get preference of Free/Paid option
@@ -211,7 +229,7 @@ def collect_user_details(request_header):
     return collected_details
 
 
-def check_calendar_by_district(request_header, vaccine_type, location_dtls, start_date, minimum_slots, min_age_booking, fee_type):
+def check_calendar_by_district(request_header, vaccine_type, location_dtls, start_date, minimum_slots, min_age_booking, fee_type, dose):
     """
     This function
         1. Takes details required to check vaccination calendar
@@ -239,7 +257,7 @@ def check_calendar_by_district(request_header, vaccine_type, location_dtls, star
                 resp = resp.json()
                 if 'centers' in resp:
                     print(f"Centers available in {location['district_name']} from {start_date} as of {today.strftime('%Y-%m-%d %H:%M:%S')}: {len(resp['centers'])}")
-                    options += viable_options(resp, minimum_slots, min_age_booking, fee_type)
+                    options += viable_options(resp, minimum_slots, min_age_booking, fee_type, dose)
 
             else:
                 pass
@@ -255,7 +273,7 @@ def check_calendar_by_district(request_header, vaccine_type, location_dtls, star
         beep(WARNING_BEEP_DURATION[0], WARNING_BEEP_DURATION[1])
 
 
-def check_calendar_by_pincode(request_header, vaccine_type, location_dtls, start_date, minimum_slots, min_age_booking, fee_type):
+def check_calendar_by_pincode(request_header, vaccine_type, location_dtls, start_date, minimum_slots, min_age_booking, fee_type, dose):
     """
     This function
         1. Takes details required to check vaccination calendar
@@ -283,7 +301,7 @@ def check_calendar_by_pincode(request_header, vaccine_type, location_dtls, start
                 resp = resp.json()
                 if 'centers' in resp:
                     print(f"Centers available in {location['pincode']} from {start_date} as of {today.strftime('%Y-%m-%d %H:%M:%S')}: {len(resp['centers'])}")
-                    options += viable_options(resp, minimum_slots, min_age_booking, fee_type)
+                    options += viable_options(resp, minimum_slots, min_age_booking, fee_type, dose)
 
             else:
                 pass
@@ -303,12 +321,10 @@ def check_calendar_by_pincode(request_header, vaccine_type, location_dtls, start
 def generate_captcha(request_header):
     print('================================= GETTING CAPTCHA ==================================================')
     resp = requests.post(CAPTCHA_URL, headers=request_header)
-    print(f'Booking Response Code: {resp.status_code}')
+    print(f'Captcha Response Code: {resp.status_code}')
 
     if resp.status_code == 200:
-        #captcha_buider(resp.json())
-        captcha = captcha_buider(resp.json())
-        return captcha
+        return captcha_builder(resp.json())
 
 
 def book_appointment(request_header, details):
@@ -375,6 +391,7 @@ def check_and_book(request_header, beneficiary_dtls, location_dtls, search_optio
         start_date = kwargs['start_date']
         vaccine_type = kwargs['vaccine_type']
         fee_type = kwargs['fee_type']
+        dose = 2 if [beneficiary['status'] for beneficiary in beneficiary_dtls][0] == 'Partially Vaccinated' else 1
 
         if isinstance(start_date, int) and start_date == 2:
             start_date = (datetime.datetime.today() + datetime.timedelta(days=1)).strftime("%d-%m-%Y")
@@ -385,10 +402,10 @@ def check_and_book(request_header, beneficiary_dtls, location_dtls, search_optio
 
         if search_option == 2:
             options = check_calendar_by_district(request_header, vaccine_type, location_dtls, start_date,
-                                                 minimum_slots, min_age_booking, fee_type)
+                                                 minimum_slots, min_age_booking, fee_type, dose)
         else:
             options = check_calendar_by_pincode(request_header, vaccine_type, location_dtls, start_date,
-                                                minimum_slots, min_age_booking, fee_type)
+                                                minimum_slots, min_age_booking, fee_type, dose)
 
         if isinstance(options, bool):
             return False
@@ -484,7 +501,7 @@ def get_fee_type_preference():
 
 def get_pincodes():
     locations = []
-    pincodes = input("Enter comma separated index numbers of pincodes to monitor: ")
+    pincodes = input("Enter comma separated pincodes to monitor: ")
     for idx, pincode in enumerate(pincodes.split(',')):
         pincode = {
             'pincode': pincode,
