@@ -12,8 +12,6 @@ For the anyone not familiar with Python and using Windows, using the ```native.b
 
 Or if You are coming from https://github.com/bombardier-gif/covid-vaccine-booking then run ```advanced.bat``` to run his version of the code. Full Documentation for this is available @ https://github.com/bombardier-gif/covid-vaccine-booking#readme
 
-OR
-
 Use **Python 3.7** and install all the dependencies with:
 ```
 pip install -r requirements.txt
