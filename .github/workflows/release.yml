@@ -1,5 +1,5 @@
 name: Create Release
-on: [commit]
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
