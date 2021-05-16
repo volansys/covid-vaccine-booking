@@ -6,11 +6,13 @@ If it helped you and want to appreciate me. Then do so by buying me coffee (link
 
 <a href="https://www.buymeacoffee.com/vishalv26" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-### Usage:
+### Usage (One Click):
 
 For the anyone not familiar with Python and using Windows, using the ```native.bat``` would be the easiest way.
 
 Or if You are coming from https://github.com/bombardier-gif/covid-vaccine-booking then run ```advanced.bat``` to run his version of the code. Full Documentation for this is available @ https://github.com/bombardier-gif/covid-vaccine-booking#readme
+
+### Usage (Developer Mode):
 
 Use **Python 3.7** and install all the dependencies with:
 ```
