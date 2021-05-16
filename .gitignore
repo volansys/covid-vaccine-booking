@@ -1,4 +1,5 @@
 src/__pycache__/
+alternate/__pycache__/
 covid-vaccine-slot-booking.spec
 vaccine-booking-details.json
 captcha.png
@@ -7,3 +8,7 @@ src/covid-vaccine-slot-booking.spec
 src/vaccine-booking-details.json
 src/captcha.png
 src/captcha.svg
+alternate/covid-vaccine-slot-booking.spec
+alternate/vaccine-booking-details.json
+alternate/captcha.png
+alternate/captcha.svg
