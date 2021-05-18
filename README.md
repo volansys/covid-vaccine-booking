@@ -18,7 +18,7 @@ Or if You are coming from https://github.com/bombardier-gif/covid-vaccine-bookin
 
 ### Usage (Developer Mode):
 
-Use **Python 3.7** and install all the dependencies with:
+Use **Python 3.8** and install all the dependencies with:
 ```
 pip install -r requirements.txt
 ```
@@ -35,12 +35,7 @@ If you already have a bearer token, you can also use:
 python src\covid-vaccine-slot-booking.py --token=YOUR-TOKEN-HERE
 ```
 
-### Third-Party Package Dependency:
-- ```tabulate``` : For displaying data in tabular format.
-- ```requests``` : For making GET and POST requests to the API.
-- ```inputimeout``` : For creating an input with timeout.
-
-Install all dependencies by running:
+### Install all dependencies by running:
 ```
 pip install -r requirements.txt
 ```
