@@ -21,6 +21,7 @@ jobs:
         git config --global user.email "action@github.com"
         git add .
         git commit -m "Synced"
+        var=$(echo $(exit 1))
           
     - uses: ad-m/github-push-action@v0.6.0
       with:
